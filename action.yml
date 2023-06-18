@@ -1,23 +1,36 @@
-name: 'Hello World'
-description: 'Greet someone'
+name: bst-test
+
+description: 'execute bst test command on self host runner'
+
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  SOURCE_ID:
     required: true
-    default: 'World'
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
+    type: string
+  JOB_CREATION:
+    required: true
+    type: string
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
-    - id: random-number-generator
-      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
-      shell: bash
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
-      shell: bash
-    - run: goodbye.sh
-      shell: bash
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: "16"
+    - name: Update description
+      run: |
+        node -e "const fs=require('fs');
+        const {name:description}=JSON.parse(fs.readFileSync('./${{ inputs.SOURCE_ID }}/.dashboard'));
+        const testing=JSON.parse(fs.readFileSync('./${{ inputs.SOURCE_ID }}/testing.json'));
+        fs.writeFileSync('./${{ inputs.SOURCE_ID }}/testing.json',JSON.stringify({...testing, description},null,4));"
+    - name: bst version
+      run: node /home/ubuntu/.nvm/versions/node/v16.20.0/bin/bst --version
+    - name: Test
+      run: node /home/ubuntu/.nvm/versions/node/v16.20.0/bin/bst test --virtualDeviceToken "$VIRTUAL_DEVICE_TOKEN" *.yml
+      working-directory: ./${{ inputs.SOURCE_ID }}
+      env:
+        VIRTUAL_DEVICE_TOKEN: ${{ secrets.VIRTUAL_DEVICE_TOKEN }}
+        JOB_CREATION_TIMESTAMP: ${{ inputs.JOB_CREATION }}
+        BESPOKEN_API_BASE_URL: https://bespoken-api-dev.bespoken.tools/
+        SOURCE_API_BASE_URL: https://source-api-dev.bespoken.tools/
