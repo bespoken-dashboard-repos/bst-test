@@ -6,7 +6,7 @@ inputs:
   SOURCE_ID:
     required: true
     type: string
-  JOB_CREATION:
+  JOB_CREATION_TIMESTAMP:
     required: true
     type: string
   VIRTUAL_DEVICE_TOKEN:
@@ -37,6 +37,6 @@ runs:
       working-directory: ./${{ inputs.SOURCE_ID }}
       env:
         VIRTUAL_DEVICE_TOKEN: ${{ inputs.VIRTUAL_DEVICE_TOKEN }}
-        JOB_CREATION_TIMESTAMP: ${{ inputs.JOB_CREATION }}
+        JOB_CREATION_TIMESTAMP: ${{ inputs.JOB_CREATION_TIMESTAMP }}
         BESPOKEN_API_BASE_URL: https://bespoken-api-dev.bespoken.tools/
         SOURCE_API_BASE_URL: https://source-api-dev.bespoken.tools/
