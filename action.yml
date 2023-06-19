@@ -20,7 +20,7 @@ runs:
       run: |
         cd ../../
         ls -la
-        rm -Rf $REPO_NAME _PipelineMapping _temp _tool _actions
+        rm -fr $REPO_NAME _PipelineMapping _temp _tool _actions
         ls -la
     - name: Checkout repository
       uses: actions/checkout@v3
