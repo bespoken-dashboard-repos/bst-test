@@ -1,10 +1,10 @@
 # bst test
-Execute bst test command in our self host environment runners
+Execute the bst test command in our self-host environment runners
 
 
 # How to use it
 
-Add and step that reference this action bespoken-dashboard-repos/bst-test@version as step
+Add and step that reference this action bespoken-dashboard-repos/bst-test@version as a step
 
 ```
   e2e-test:
@@ -18,4 +18,4 @@ Add and step that reference this action bespoken-dashboard-repos/bst-test@versio
           JOB_CREATION: 
           VIRTUAL_DEVICE_TOKEN: 
 ```
-Replace vertion with the one you are going to use, and set the paramenters SOURCE_ID, JOB_CREATION and JOB_CREATION
+Replace the version with the one you are going to use, and set the parameters SOURCE_ID, JOB_CREATION, and JOB_CREATION
